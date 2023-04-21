@@ -1,0 +1,4 @@
+Google login: http://localhost:8081/oauth2/authorization/google
+Response to FE: http://localhost:3000/login/google?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG5zZGtsYWhzZGtobEBnbWFpbC5jb20iLCJpYXQiOjE2NzM4Nzg4NjYsImV4cCI6MTY3NjQ3MDg2Nn0.xbtK3qNfEEbcUyXT9bYv404S9VDcCnddzAT3iPDoi6Ge-578bJHt-tAncwnAV88_a83AIN7RWKCY3Sq6rN20gA&refresh=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG5zZGtsYWhzZGtobEBnbWFpbC5jb20iLCJpYXQiOjE2NzM4Nzg4NjYsImV4cCI6MTcwNTQxNDg2Nn0.Oe3f-q4ezvyXU3INLK_VtTFNmQ-nUOp4FVeEE9L4-xLTlaS9ButytgHq6raOGUQ1rNL1JK3yiCyI908g29-71w&code=1PPXFS4W3B
+Create account first then still login by google account access the same account.
+If the email is not in the system - create new user account and send the code on the url redirect to FE then change password !

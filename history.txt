@@ -1,0 +1,7 @@
+8/2: Update Statistic Report. add report , handleDate, add cover letter for cvsubmit, Delete category level
+Phân chia cho Schedule upcoming and history
+18/2: Thêm bảng Appoint, CRUD, thêm thông báo .
+18/2: Allow Emp to destroy current package to update a nother package
+not allow to enter wrong  pass word  5 times, when login by gmail or reset then reset that number 
+adjust service add mor attribute: search CV User, Filter cvsubmit () - fix Service create update, cvsearch
+add more feature to profile (skill and workexperience)

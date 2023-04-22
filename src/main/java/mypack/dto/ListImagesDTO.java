@@ -11,6 +11,6 @@ public class ListImagesDTO {
 
 	private Long id;
 	
-	 private byte[] image;
+	private String imgUrl;
 }
 

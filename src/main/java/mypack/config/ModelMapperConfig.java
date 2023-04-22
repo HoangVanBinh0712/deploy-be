@@ -10,6 +10,7 @@ import mypack.dto.BannerDTO;
 import mypack.dto.CVSubmitDTO;
 import mypack.dto.ChatMessageDTO;
 import mypack.dto.IndustryDTO;
+import mypack.dto.ListImagesDTO;
 import mypack.dto.ProfileDTO;
 import mypack.dto.UserDTO;
 import mypack.model.Achievement;
@@ -17,6 +18,7 @@ import mypack.model.Banner;
 import mypack.model.CVSubmit;
 import mypack.model.ChatMessage;
 import mypack.model.Industry;
+import mypack.model.ListImages;
 import mypack.model.Profile;
 import mypack.model.User;
 
@@ -51,6 +53,10 @@ public class ModelMapperConfig {
 		});
 		modelMapper.createTypeMap(ChatMessage.class, ChatMessageDTO.class).addMappings(mapper -> {
 			mapper.map(src -> src.getChatRoom().getId(), (dst, value) -> dst.setChatRoomId((Long) value));
+		});
+
+		modelMapper.createTypeMap(ListImages.class, ListImagesDTO.class).addMappings(mapper -> {
+			mapper.map(src -> src.getImage().getUrl(), (dst, value) -> dst.setImgUrl((String) value));
 		});
 		return modelMapper;
 	}

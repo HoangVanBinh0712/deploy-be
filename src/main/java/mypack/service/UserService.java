@@ -302,9 +302,18 @@ public class UserService {
 		for (int i = 0; i < files.length; i++) {
 			MultipartFile f = files[i];
 			ListImages img = new ListImages();
-			img.setImage(f.getBytes());
-			img.setUser(us);
-			lstImg.add(img);
+			if (f != null) {
+				// Up load new Image
+				try {
+					MediaResource mr = mediaResourceService.save(f.getBytes());
+					img.setImage(mr);
+					img.setUser(us);
+					lstImg.add(img);
+				} catch (IOException e) {
+					throw new CommonRuntimeException("Error occur when uploading new image !");
+				}
+			}
+
 		}
 
 		listImagesRepository.saveAll(lstImg);
@@ -321,11 +330,13 @@ public class UserService {
 
 	@Transactional
 	public BaseResponse employerDeleteImages(Long imgId) {
+		ListImages img = listImagesRepository.findById(imgId).orElseThrow(() -> new CommonRuntimeException("Image not found !"));
 		try {
-			listImagesRepository.deleteById(imgId);
+			mediaResourceService.delete(img.getImage().getId());
+			listImagesRepository.delete(img);
 			return new BaseResponse(true, "success");
 		} catch (Exception ex) {
-			return new BaseResponse(true, "Image not found !");
+			return new BaseResponse(true, "Error when delete image !");
 
 		}
 	}

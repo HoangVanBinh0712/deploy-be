@@ -5,7 +5,6 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mypack.model.ChatRoom;
 import mypack.model.MediaResource;
 
 @Getter

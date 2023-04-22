@@ -3,6 +3,7 @@ package mypack.controller;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,6 +30,11 @@ public class PaypalController {
     @Autowired
     OrderService orderService;
 
+    @Value("${app.url}")
+    private String url;
+
+    @Value("${career.app.fe.url}")
+    private String feUrl;
     public static final String SUCCESS_URL = "api/pay/success";
     public static final String CANCEL_URL = "api/pay/cancel";
 
@@ -44,8 +50,7 @@ public class PaypalController {
             Long orderId = orderService.createOrder(emp.getEmail(), serviceId, duration);
 
             try {
-                Payment payment = service.createPayment(orderId, "http://localhost:8081/" + CANCEL_URL,
-                        "http://localhost:8081/" + SUCCESS_URL);
+                Payment payment = service.createPayment(orderId, url + CANCEL_URL, url + SUCCESS_URL);
                 for (Links link : payment.getLinks()) {
                     if (link.getRel().equals("approval_url")) {
                         service.saveLink(orderId, link.getHref());
@@ -70,7 +75,7 @@ public class PaypalController {
     @GetMapping(CANCEL_URL)
     public ResponseEntity<?> cancelPay() {
         return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create("http://localhost:3000/employer/orders"))
+                .location(URI.create(feUrl))
                 .build();
     }
 
@@ -85,7 +90,7 @@ public class PaypalController {
                 // Do update here
                 service.handleSuccess(payment);
                 return ResponseEntity.status(HttpStatus.FOUND)
-                        .location(URI.create("http://localhost:3000/employer/orders"))
+                        .location(URI.create(feUrl))
                         .build();
 
             }

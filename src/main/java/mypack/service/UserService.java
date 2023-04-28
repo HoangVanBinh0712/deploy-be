@@ -199,7 +199,7 @@ public class UserService {
 		user.setIndustry(ind);
 		user.setAddress(request.getAddress());
 		user.setName(request.getName());
-
+		user.setDescription(request.getDescription());
 		if (avatar != null) {
 			// Delete old image
 			if (user.getAvatar() != null) {

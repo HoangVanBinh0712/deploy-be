@@ -44,4 +44,6 @@ public class JobseekerProfileUpdateRequest implements Serializable {
 	@NotNull
 	private Long industryId;
 
+	@NotBlank
+	private String description;
 }

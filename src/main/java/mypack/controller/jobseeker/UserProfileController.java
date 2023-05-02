@@ -58,16 +58,16 @@ public class UserProfileController {
 	//
 	@PostMapping(value = "/cv", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<?> uploadCV(@AuthenticationPrincipal UserDetailsCustom user,
-			@RequestPart(name = "CV") MultipartFile cv, @RequestPart(name = "name") CVUploadRequest request) {
+			@RequestPart(name = "CV") MultipartFile cv, @RequestPart(name = "info") @Valid CVUploadRequest request) {
 		if (cv.getContentType() != null && !cv.getContentType().equals(MediaType.APPLICATION_PDF_VALUE))
 			return ResponseEntity.ok(new BaseResponse(false, "Allow only pdf file !"));
 		return ResponseEntity.ok(userService.uploadCV(user.getEmail(), cv, request));
 	}
 
 	@PutMapping(value = "/cv/{mediaId}")
-	public ResponseEntity<?> uploadCV(@AuthenticationPrincipal UserDetailsCustom user,
-			@PathVariable("mediaId") Long mediaId, @RequestBody CVUploadRequest request) {
-
+	public ResponseEntity<?> updateCV(@AuthenticationPrincipal UserDetailsCustom user,
+			@PathVariable("mediaId") Long mediaId,
+			@RequestBody @Valid CVUploadRequest request) {
 		return ResponseEntity.ok(userService.updateCV(user.getEmail(), mediaId, request));
 	}
 

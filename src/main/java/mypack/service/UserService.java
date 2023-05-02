@@ -330,7 +330,8 @@ public class UserService {
 
 	@Transactional
 	public BaseResponse employerDeleteImages(Long imgId) {
-		ListImages img = listImagesRepository.findById(imgId).orElseThrow(() -> new CommonRuntimeException("Image not found !"));
+		ListImages img = listImagesRepository.findById(imgId)
+				.orElseThrow(() -> new CommonRuntimeException("Image not found !"));
 		try {
 			mediaResourceService.delete(img.getImage().getId());
 			listImagesRepository.delete(img);
@@ -391,6 +392,7 @@ public class UserService {
 	}
 
 	// Job seeker cv
+	@Transactional
 	public DataResponse<ProfileDTO> uploadCV(String email, MultipartFile cv, CVUploadRequest request) {
 		Optional<User> optUser = userRepo.findByEmail(email);
 		if (optUser.isEmpty())
@@ -419,6 +421,7 @@ public class UserService {
 			return new DataResponse<>(true, "Upload success !",
 					mapper.map(profileRepository.save(profile), ProfileDTO.class));
 		} catch (Exception e) {
+			e.printStackTrace();
 			if (mr != null)
 				mediaResourceService.delete(mr.getId());
 			throw new CommonRuntimeException("Error when upload cv !");
@@ -426,6 +429,7 @@ public class UserService {
 
 	}
 
+	@Transactional
 	public DataResponse<ProfileDTO> updateCV(String email, Long mediaId, CVUploadRequest request) {
 		Optional<User> optUser = userRepo.findByEmail(email);
 		if (optUser.isEmpty())

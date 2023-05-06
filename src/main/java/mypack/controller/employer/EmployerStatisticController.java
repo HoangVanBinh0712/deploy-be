@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cloudinary.http44.api.Response;
-
 import mypack.service.EmployerStatisticService;
 import mypack.service.UserDetailsCustom;
 

@@ -20,6 +20,6 @@ public class CVSubmitRequest {
 	private Long mediaId;
 	
 	@NotBlank
-	@Length(min = 6)
+	@Length(min = 30)
 	private String coverLetter;
 }

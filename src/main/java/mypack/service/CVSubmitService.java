@@ -1,13 +1,19 @@
 package mypack.service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import mypack.controller.exception.CommonRuntimeException;
@@ -48,6 +54,12 @@ public class CVSubmitService {
 
 	@Autowired
 	ModelMapper modelMapper;
+
+	@Autowired
+	RestTemplate restTemplate;
+
+	@Value("${career.app.ai.personality.url}")
+	String aiUurl;
 
 	@Value("${email.content.employer-notification-submitedCV}")
 	private String content;
@@ -121,6 +133,21 @@ public class CVSubmitService {
 		cvSubmit.setCoverLetter(request.getCoverLetter());
 		cvSubmit.setMatchPercent((long) FuzzySearch.tokenSetRatio(post.getDescription(),
 				profile.getSkillsAndKnowledges() + " " + profile.getWorkExperiences()));
+		try {
+			HttpHeaders headers = new HttpHeaders();
+			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+			headers.setContentType(MediaType.APPLICATION_JSON);
+
+			JSONObject requestBody = new JSONObject();
+			requestBody.put("message", request.getCoverLetter());
+
+			HttpEntity<String> entity = new HttpEntity<>(requestBody.toString(), headers);
+			String response = restTemplate.postForEntity(aiUurl, entity, String.class).getBody();
+			JSONObject jObject = new JSONObject(response); // json
+			cvSubmit.setPersonality(jObject.getString("result"));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 
 		cvSubmitRepository.save(cvSubmit);
 		// add notification for employer

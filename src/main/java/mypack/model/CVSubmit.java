@@ -27,20 +27,23 @@ public class CVSubmit {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_id", insertable = false, updatable = false)
 	private Post post;
-	
-	@ManyToOne 
-    @JoinColumn(name = "user_id",referencedColumnName = "user_id" , insertable = false, updatable = false)
-    @JoinColumn(name = "media_id", referencedColumnName = "media_id", insertable = false, updatable = false)
-    private Profile profile;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false)
+	@JoinColumn(name = "media_id", referencedColumnName = "media_id", insertable = false, updatable = false)
+	private Profile profile;
+
 	@Column
 	private Date date;
-	
+
 	@Column(name = "match_percent")
 	private Long matchPercent;
-	
-	@Column(name="cover_letter", columnDefinition = "varchar(1000)")
+
+	@Column(name = "cover_letter", length = 60000, columnDefinition = "MEDIUMTEXT CHARACTER SET UTF8MB4")
 	@NotBlank
-	@Length(min = 5)
+	@Length(min = 30)
 	private String coverLetter;
+
+	@Column
+	private String personality;
 }

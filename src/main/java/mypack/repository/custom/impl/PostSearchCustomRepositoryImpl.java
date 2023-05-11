@@ -33,7 +33,8 @@ public class PostSearchCustomRepositoryImpl implements PostSearchCustomRepositor
 	@PersistenceContext
 	EntityManager em;
 
-	public List<Post> postSearch(String keyword, Long recruit, Long salary, EMethod method, EPosition position,
+	public List<Post> postSearch(String keyword, Long recruit, Long mSalary, Long hSalary, EMethod method,
+			EPosition position,
 			EExperience experience, EGender gender, ECurrency currency, Long authorId, Long industryId, Long cityId,
 			EStatus status, Date expirationDate, Date startDate, Long serviceId, Page page) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -47,8 +48,10 @@ public class PostSearchCustomRepositoryImpl implements PostSearchCustomRepositor
 		if (recruit != null)
 			lstPredicate.add(cb.greaterThanOrEqualTo(root.get(Post_.recruit), recruit));
 
-		if (salary != null)
-			lstPredicate.add(cb.greaterThanOrEqualTo(root.get(Post_.salary), salary));
+		if (mSalary != null)
+			lstPredicate.add(cb.greaterThanOrEqualTo(root.get(Post_.salary), mSalary));
+		if (hSalary != null)
+			lstPredicate.add(cb.lessThanOrEqualTo(root.get(Post_.salary), hSalary));
 
 		if (method != null)
 			lstPredicate.add(cb.equal(root.get(Post_.method), method));
@@ -101,7 +104,8 @@ public class PostSearchCustomRepositoryImpl implements PostSearchCustomRepositor
 		return query.getResultList();
 	}
 
-	public Long postCountBeforeSearch(String keyword, Long recruit, Long salary, EMethod method, EPosition position,
+	public Long postCountBeforeSearch(String keyword, Long recruit, Long mSalary, Long hSalary, EMethod method,
+			EPosition position,
 			EExperience experience, EGender gender, ECurrency currency, Long authorId, Long industryId, Long cityId,
 			EStatus status, Date expirationDate,
 			Date startDate, Long serviceId) {
@@ -116,8 +120,11 @@ public class PostSearchCustomRepositoryImpl implements PostSearchCustomRepositor
 		if (recruit != null)
 			lstPredicate.add(cb.greaterThanOrEqualTo(root.get(Post_.recruit), recruit));
 
-		if (salary != null)
-			lstPredicate.add(cb.greaterThanOrEqualTo(root.get(Post_.salary), salary));
+		if (mSalary != null)
+			lstPredicate.add(cb.greaterThanOrEqualTo(root.get(Post_.salary), mSalary));
+
+		if (hSalary != null)
+			lstPredicate.add(cb.lessThanOrEqualTo(root.get(Post_.salary), hSalary));
 
 		if (method != null)
 			lstPredicate.add(cb.equal(root.get(Post_.method), method));

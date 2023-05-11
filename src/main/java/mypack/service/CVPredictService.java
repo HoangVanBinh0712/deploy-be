@@ -59,12 +59,12 @@ public class CVPredictService {
 
 			HttpHeaders headers = new HttpHeaders();
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			headers.setContentType(MediaType.APPLICATION_JSON );
+			headers.setContentType(MediaType.APPLICATION_JSON);
 
 			JSONObject requestBody = new JSONObject();
 			requestBody.put("resume", resume);
 			requestBody.put("skill", skill);
-			
+
 			HttpEntity<String> entity = new HttpEntity<>(requestBody.toString(), headers);
 			String response = restTemplate.postForEntity(aiUurl, entity, String.class).getBody();
 			JSONObject jObject = new JSONObject(response); // json
@@ -81,12 +81,12 @@ public class CVPredictService {
 
 			Industry ind = IndustryRepository.getByNameLike(highestIndustry);
 
-			int count = postRepository.postCountBeforeSearch(null, null, null, null, null, null, null, null, null,
+			int count = postRepository.postCountBeforeSearch(null, null, null, null, null, null, null, null, null, null,
 					ind.getId(), null, EStatus.ACTIVE, null, null, null).intValue();
 
 			Page page = new Page(null, null, count);
 
-			List<PostDTO> posts = postRepository.postSearch(null, null, null, null, null, null, null, null, null,
+			List<PostDTO> posts = postRepository.postSearch(null, null, null, null, null, null, null, null, null, null,
 					ind.getId(), null, EStatus.ACTIVE, null, null, null, page).stream()
 					.map(p -> modelMapper.map(p, PostDTO.class)).toList();
 
@@ -110,12 +110,12 @@ public class CVPredictService {
 		 * Date startDate, Long serviceId
 		 * 
 		 */
-		int count = postRepository.postCountBeforeSearch(null, null, null, null, null, null, null, null, null,
+		int count = postRepository.postCountBeforeSearch(null, null, null, null, null, null, null, null, null, null,
 				Industry.getId(), null, null, null, null, null).intValue();
 
 		Page page = new Page(pageNumber, limit, count);
 
-		List<PostDTO> posts = postRepository.postSearch(null, null, null, null, null, null, null, null, null,
+		List<PostDTO> posts = postRepository.postSearch(null, null, null, null, null, null, null, null, null, null,
 				Industry.getId(), null, null, null, null, null, page).stream()
 				.map(p -> modelMapper.map(p, PostDTO.class)).toList();
 

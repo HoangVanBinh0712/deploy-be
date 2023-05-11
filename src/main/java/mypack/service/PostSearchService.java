@@ -41,21 +41,25 @@ public class PostSearchService {
 	@Autowired
 	ModelMapper modelMapper;
 
-	public Long getCountBeforSearch(String keyword, Long recruit, Long salary, EMethod method, EPosition position,
+	public Long getCountBeforSearch(String keyword, Long recruit, Long mSalary, Long hSalary, EMethod method,
+			EPosition position,
 			EExperience experience, EGender gender, ECurrency currency, Long authorId, Long industryId, Long cityId,
 			EStatus status, Date expirationDate, Date startDate, Long serviceId) {
-		return postRepository.postCountBeforeSearch(keyword, recruit, salary, method, position, experience, gender,
+		return postRepository.postCountBeforeSearch(keyword, recruit, mSalary, hSalary, method, position, experience,
+				gender,
 				currency, authorId, industryId, cityId, status, expirationDate, startDate, serviceId);
 	}
 
-	public ListWithPagingResponse<PostDTO> search(String keyword, Long recruit, Long salary, EMethod method,
+	public ListWithPagingResponse<PostDTO> search(String keyword, Long recruit, Long mSalary, Long hSalary,
+			EMethod method,
 			EPosition position, EExperience experience, EGender gender, ECurrency currency, Long authorId,
 			Long industryId, Long cityId, EStatus status, Date expirationDate, Date startDate, Long serviceId,
 			Page page) {
 
 		return new ListWithPagingResponse<>(page.getPageNumber() + 1, page.getTotalPage(), page.getPageSize(),
 				postRepository
-						.postSearch(keyword, recruit, salary, method, position, experience, gender, currency, authorId,
+						.postSearch(keyword, recruit, mSalary, hSalary, method, position, experience, gender, currency,
+								authorId,
 								industryId, cityId, status, expirationDate, startDate, serviceId, page)
 						.stream().map(p -> modelMapper.map(p, PostDTO.class)).toList());
 	}
@@ -78,49 +82,49 @@ public class PostSearchService {
 		Date stDate, endDate;
 
 		switch (type) {
-		case YEAR: {
+			case YEAR: {
 
-			LocalDate firstDay = now.with(firstDayOfYear()); // 2015-01-01
-			LocalDate lastDay = now.with(lastDayOfYear()); // 2015-12-31
-			stDate = Date.from(firstDay.atStartOfDay(ZoneId.systemDefault()).toInstant());
-			endDate = Date.from(lastDay.atStartOfDay(ZoneId.systemDefault()).toInstant());
-			break;
-		}
-		case MONTH: {
-			int year = now.getYear();
-			int month = now.getMonthValue(); // you can pass any value of month Like 1,2,3
-			YearMonth yearMonth = YearMonth.of(year, month);
-			LocalDate firstOfMonth = yearMonth.atDay(1);
-			LocalDate lastOfMonth = yearMonth.atEndOfMonth();
-
-			endDate = Date.from(lastOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
-			stDate = Date.from(firstOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-			break;
-		}
-		default:
-			// week
-
-			// Go backward to get Monday
-			LocalDate monday = now;
-			while (monday.getDayOfWeek() != DayOfWeek.MONDAY) {
-				monday = monday.minusDays(1);
+				LocalDate firstDay = now.with(firstDayOfYear()); // 2015-01-01
+				LocalDate lastDay = now.with(lastDayOfYear()); // 2015-12-31
+				stDate = Date.from(firstDay.atStartOfDay(ZoneId.systemDefault()).toInstant());
+				endDate = Date.from(lastDay.atStartOfDay(ZoneId.systemDefault()).toInstant());
+				break;
 			}
-			stDate = Date.from(monday.atStartOfDay(ZoneId.systemDefault()).toInstant());
+			case MONTH: {
+				int year = now.getYear();
+				int month = now.getMonthValue(); // you can pass any value of month Like 1,2,3
+				YearMonth yearMonth = YearMonth.of(year, month);
+				LocalDate firstOfMonth = yearMonth.atDay(1);
+				LocalDate lastOfMonth = yearMonth.atEndOfMonth();
 
-			// Go forward to get Sunday
-			LocalDate sunday = now;
-			while (sunday.getDayOfWeek() != DayOfWeek.SUNDAY) {
-				sunday = sunday.plusDays(1);
+				endDate = Date.from(lastOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
+				stDate = Date.from(firstOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+				break;
 			}
-			endDate = Date.from(sunday.atStartOfDay(ZoneId.systemDefault()).toInstant());
-			break;
+			default:
+				// week
+
+				// Go backward to get Monday
+				LocalDate monday = now;
+				while (monday.getDayOfWeek() != DayOfWeek.MONDAY) {
+					monday = monday.minusDays(1);
+				}
+				stDate = Date.from(monday.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+				// Go forward to get Sunday
+				LocalDate sunday = now;
+				while (sunday.getDayOfWeek() != DayOfWeek.SUNDAY) {
+					sunday = sunday.plusDays(1);
+				}
+				endDate = Date.from(sunday.atStartOfDay(ZoneId.systemDefault()).toInstant());
+				break;
 		}
 		System.out.println(stDate);
 		System.out.println(endDate);
 
 		return new ListWithPagingResponse<>(page, 1, limit,
-				postRepository.getHotPostByDates(stDate, endDate, (page-1) * limit, limit).stream()
+				postRepository.getHotPostByDates(stDate, endDate, (page - 1) * limit, limit).stream()
 						.map(p -> modelMapper.map(p, PostDTO.class)).toList());
 	}
 }

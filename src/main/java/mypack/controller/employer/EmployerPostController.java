@@ -69,7 +69,8 @@ public class EmployerPostController {
 	public ResponseEntity<?> getPost(@AuthenticationPrincipal UserDetailsCustom emp,
 			@RequestParam(name = "keyword", required = false) String keyword,
 			@RequestParam(name = "recruit", required = false) Long recruit,
-			@RequestParam(name = "salary", required = false) Long salary,
+			@RequestParam(name = "min-salary", required = false) Long mSalary,
+			@RequestParam(name = "high-salary", required = false) Long hSalary,
 			@RequestParam(name = "method", required = false) EMethod method,
 			@RequestParam(name = "position", required = false) EPosition position,
 			@RequestParam(name = "experience", required = false) EExperience experience,
@@ -87,11 +88,13 @@ public class EmployerPostController {
 			@RequestParam(required = false) Boolean sortDescending)
 			throws ParseException {
 
-		Long count = postSearchService.getCountBeforSearch(keyword, recruit, salary, method, position, experience,
+		Long count = postSearchService.getCountBeforSearch(keyword, recruit, mSalary, hSalary, method, position,
+				experience,
 				gender, currency, emp.getId(), industryId, cityId, status, expirationDate, startDate,
 				serviceId);
 
-		return ResponseEntity.ok(postSearchService.search(keyword, recruit, salary, method, position, experience,
+		return ResponseEntity.ok(postSearchService.search(keyword, recruit, mSalary, hSalary, method, position,
+				experience,
 				gender, currency, emp.getId(), industryId, cityId, status, expirationDate, startDate,
 				serviceId, new Page(page, limit, count.intValue(), ModelSorting.getPostSort(sortBy, sortDescending))));
 	}

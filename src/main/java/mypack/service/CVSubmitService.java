@@ -19,12 +19,14 @@ import me.xdrop.fuzzywuzzy.FuzzySearch;
 import mypack.controller.exception.CommonRuntimeException;
 import mypack.dto.CVSubmitDTO;
 import mypack.dto.PostDTO;
+import mypack.dto.ProfileDTO;
 import mypack.model.CVSubmit;
 import mypack.model.Post;
 import mypack.model.Profile;
 import mypack.model.pk.CVSubmitPK;
 import mypack.model.pk.ProfilePK;
 import mypack.payload.BaseResponse;
+import mypack.payload.DataResponse;
 import mypack.payload.ListResponse;
 import mypack.payload.ListWithPagingResponse;
 import mypack.payload.jobseeker.CVSubmitRequest;
@@ -66,6 +68,17 @@ public class CVSubmitService {
 
 	@Autowired
 	SendEmailService sendEmailService;
+
+	public DataResponse<ProfileDTO> checkUserSubmittedPost(Long userId, Long postId){
+		Optional<CVSubmit> cvOptional = cvSubmitRepository.findByUserAndPost(userId, postId);
+		if (cvOptional.isPresent()){
+			//User is already submitted to post
+			CVSubmit cvSubmit = cvOptional.get();
+			Profile profile = cvSubmit.getProfile();
+			return new DataResponse<>(true, null, modelMapper.map(profile, ProfileDTO.class) );
+		}
+		return new DataResponse<>(true, null, null);
+	}
 
 	public ListWithPagingResponse<CVSubmitDTO> getListCV(Long employerId, Long postId, Integer page, Integer limit) {
 

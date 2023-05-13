@@ -26,7 +26,8 @@ public class CVSubmitController {
 	CVSubmitService cvSubmitService;
 
 	@PostMapping("user/submitcv")
-	public ResponseEntity<?> submit(@AuthenticationPrincipal UserDetailsCustom user,@RequestBody @Valid CVSubmitRequest request) {
+	public ResponseEntity<?> submit(@AuthenticationPrincipal UserDetailsCustom user,
+			@RequestBody @Valid CVSubmitRequest request) {
 		return ResponseEntity.ok(cvSubmitService.submitCV(user, request));
 	}
 
@@ -48,4 +49,11 @@ public class CVSubmitController {
 			@RequestParam(name = "limit", required = false) Integer limit) {
 		return ResponseEntity.ok(cvSubmitService.getListCV(emp.getId(), postId, page, limit));
 	}
+
+	@GetMapping("user/check-submit-cv")
+	public ResponseEntity<?> checkSubmitCV(@AuthenticationPrincipal UserDetailsCustom user,
+			@RequestParam("postId") Long postId) {
+		return ResponseEntity.ok(cvSubmitService.checkUserSubmittedPost(user.getId(), postId));
+	}
+
 }

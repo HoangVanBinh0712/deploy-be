@@ -75,9 +75,9 @@ public class CVSubmitService {
 			//User is already submitted to post
 			CVSubmit cvSubmit = cvOptional.get();
 			Profile profile = cvSubmit.getProfile();
-			return new DataResponse<>(true, null, modelMapper.map(profile, ProfileDTO.class) );
+			return new DataResponse<>(true, "", modelMapper.map(profile, ProfileDTO.class) );
 		}
-		return new DataResponse<>(true, null, null);
+		return new DataResponse<>(true, "", null);
 	}
 
 	public ListWithPagingResponse<CVSubmitDTO> getListCV(Long employerId, Long postId, Integer page, Integer limit) {

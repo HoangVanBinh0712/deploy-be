@@ -31,7 +31,7 @@ public class ReportRequest {
 
     @NotBlank
     @Length(min = 10)
-    private String reportContet;
+    private String reportContent;
 
     // Id of post report
     @NotNull

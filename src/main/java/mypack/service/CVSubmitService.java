@@ -95,9 +95,6 @@ public class CVSubmitService {
 
 		List<CVSubmit> lstCV = cvSubmitRepository.findByPost(postId, (page - 1) * limit, limit);
 
-		if (lstCV.isEmpty())
-			throw new CommonRuntimeException("No cv is submitted to this post !.");
-
 		Integer count = cvSubmitRepository.countByPost(postId).intValue();
 		Integer totalPage;
 		if (count % limit != 0)

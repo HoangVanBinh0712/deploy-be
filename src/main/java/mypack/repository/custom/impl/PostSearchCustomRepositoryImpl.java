@@ -83,12 +83,13 @@ public class PostSearchCustomRepositoryImpl implements PostSearchCustomRepositor
 
 		if (serviceId != null)
 			lstPredicate.add(cb.equal(root.get(Post_.service), serviceId));
+
 		if (status != null)
 			lstPredicate.add(cb.equal(root.get(Post_.status), status));
-		else {
-			lstPredicate.add(cb.or(cb.equal(root.get(Post_.status), EStatus.ACTIVE),
-					cb.equal(root.get(Post_.status), EStatus.DISABLE)));
-		}
+		// else {
+		// 	lstPredicate.add(cb.or(cb.equal(root.get(Post_.status), EStatus.ACTIVE),
+		// 			cb.equal(root.get(Post_.status), EStatus.DISABLE)));
+		// }
 
 		if (page.getSort() != null) {
 			cq.orderBy(QueryUtils.toOrders(page.getSort(), root, cb));
@@ -156,12 +157,13 @@ public class PostSearchCustomRepositoryImpl implements PostSearchCustomRepositor
 
 		if (serviceId != null)
 			lstPredicate.add(cb.equal(root.get(Post_.service), serviceId));
+			
 		if (status != null)
 			lstPredicate.add(cb.equal(root.get(Post_.status), status));
-		else {
-			lstPredicate.add(cb.or(cb.equal(root.get(Post_.status), EStatus.ACTIVE),
-					cb.equal(root.get(Post_.status), EStatus.DISABLE)));
-		}
+		// else {
+		// 	lstPredicate.add(cb.or(cb.equal(root.get(Post_.status), EStatus.ACTIVE),
+		// 			cb.equal(root.get(Post_.status), EStatus.DISABLE)));
+		// }
 
 		Predicate predicate = cb.and(lstPredicate.toArray(new Predicate[0]));
 

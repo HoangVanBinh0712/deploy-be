@@ -89,13 +89,11 @@ public class EmployerPostController {
 			throws ParseException {
 
 		Long count = postSearchService.getCountBeforSearch(keyword, recruit, mSalary, hSalary, method, position,
-				experience,
-				gender, currency, emp.getId(), industryId, cityId, status, expirationDate, startDate,
+				experience, gender, currency, emp.getId(), industryId, cityId, status, expirationDate, startDate,
 				serviceId);
 
 		return ResponseEntity.ok(postSearchService.search(keyword, recruit, mSalary, hSalary, method, position,
-				experience,
-				gender, currency, emp.getId(), industryId, cityId, status, expirationDate, startDate,
+				experience, gender, currency, emp.getId(), industryId, cityId, status, expirationDate, startDate,
 				serviceId, new Page(page, limit, count.intValue(), ModelSorting.getPostSort(sortBy, sortDescending))));
 	}
 

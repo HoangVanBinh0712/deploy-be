@@ -22,6 +22,7 @@ import mypack.utility.datatype.EGender;
 import mypack.utility.datatype.EMethod;
 import mypack.utility.datatype.EMostViewType;
 import mypack.utility.datatype.EPosition;
+import mypack.utility.datatype.EStatus;
 
 @RequestMapping("api/post")
 @RestController
@@ -73,14 +74,15 @@ public class PostController {
 			@RequestParam(name = "limit", required = false) Integer limit,
 			@RequestParam(required = false) Integer sortBy, @RequestParam(required = false) Boolean sortDescending)
 			throws ParseException {
-
+		// Active post only
 		Long count = postSearchService.getCountBeforSearch(keyword, recruit, mSalary, hSalary, method, position,
-				experience,
-				gender, currency, authorId, industryId, cityId, null, expirationDate, startDate, serviceId);
+				experience, gender, currency, authorId, industryId, cityId, EStatus.ACTIVE, expirationDate, startDate,
+				serviceId);
 
 		return ResponseEntity
 				.ok(postSearchService.search(keyword, recruit, mSalary, hSalary, method, position, experience,
-						gender, currency, authorId, industryId, cityId, null, expirationDate, startDate, serviceId,
+						gender, currency, authorId, industryId, cityId, EStatus.ACTIVE, expirationDate, startDate,
+						serviceId,
 						new Page(page, limit, count.intValue(), ModelSorting.getPostSort(sortBy, sortDescending))));
 	}
 

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import mypack.controller.exception.CommonRuntimeException;
+import mypack.dto.AchievementDTO;
 import mypack.dto.JwtResponse;
 import mypack.dto.ListImagesDTO;
 import mypack.dto.LoginRequest;
@@ -42,6 +43,8 @@ import mypack.payload.auth.JobseekerProfileUpdateRequest;
 import mypack.payload.auth.JobseekerRegisterRequest;
 import mypack.payload.auth.PasswordUpdateRequest;
 import mypack.payload.auth.ResetPasswordRequest;
+import mypack.payload.jobseeker.JobseekerProfileResponse;
+import mypack.repository.AchievementRepository;
 import mypack.repository.CVSubmitRepository;
 import mypack.repository.CVViewedRepository;
 import mypack.repository.CityRepository;
@@ -104,6 +107,9 @@ public class UserService {
 
 	@Autowired
 	ListImagesRepository listImagesRepository;
+
+	@Autowired
+	private AchievementRepository achievementRepository;
 
 	public BaseResponse jobseekerRegister(JobseekerRegisterRequest request) {
 		try {
@@ -374,6 +380,20 @@ public class UserService {
 			throw new CommonRuntimeException("Employer not found with Email: " + email);
 
 		return mapper.map(optEmployer.get(), UserDTO.class);
+	}
+
+	public JobseekerProfileResponse getJSKProfile(Long id) {
+		Optional<User> optUser = userRepo.findByIdAndRole(id, ERole.ROLE_USER);
+		if (optUser.isEmpty())
+			throw new CommonRuntimeException("Jobseeker not found with Id: " + id);
+		User user = optUser.get();
+		JobseekerProfileResponse res = new JobseekerProfileResponse();
+		res.setUser(mapper.map(user, UserDTO.class));
+		List<AchievementDTO> achs = achievementRepository.findByUser(user).stream()
+				.map(x -> mapper.map(x, AchievementDTO.class)).toList();
+		res.setAchievements(null);
+		res.setAchievements(achs);
+		return res;
 	}
 
 	public BaseResponse changePassword(String email, @Valid PasswordUpdateRequest request) {

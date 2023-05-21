@@ -35,17 +35,17 @@ public class EmployerStatisticController {
     }
 
     @GetMapping("view-post")
-    public ResponseEntity<?> getViewPostStatistic(@AuthenticationPrincipal UserDetailsCustom emp) {
-
-        return ResponseEntity.ok(service.getViewPostCountStatistc(emp.getEmail()));
-
+    public ResponseEntity<?> getViewPostStatistic(@RequestParam(name = "year", required = true) Integer year,
+            @AuthenticationPrincipal UserDetailsCustom emp) {
+        return ResponseEntity.ok(service.getViewPostCountStatistc(year, emp.getEmail()));
     }
 
-//    @GetMapping("comments")
-//    public ResponseEntity<?> getCommentStatistic(@AuthenticationPrincipal UserDetailsCustom emp,
-//            @RequestParam(name = "year", required = true) Integer year) {
-//
-//        return ResponseEntity.ok(service.getCountComments(emp.getEmail(), year));
-//
-//    }
+    // @GetMapping("comments")
+    // public ResponseEntity<?> getCommentStatistic(@AuthenticationPrincipal
+    // UserDetailsCustom emp,
+    // @RequestParam(name = "year", required = true) Integer year) {
+    //
+    // return ResponseEntity.ok(service.getCountComments(emp.getEmail(), year));
+    //
+    // }
 }

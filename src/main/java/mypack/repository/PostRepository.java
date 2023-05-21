@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import mypack.model.Post;
+import mypack.model.User;
 import mypack.payload.statistic.StatisticForCount;
 import mypack.repository.custom.PostSearchCustomRepository;
 
@@ -23,6 +24,9 @@ public interface PostRepository extends JpaRepository<Post, Long>, PostSearchCus
 
 	@Query(value = "Select sum(view_count) from post where author = :id", nativeQuery = true)
 	Long getTotalViewPost(@Param("id") Long empId);
+
+	@Query(value = "Select new mypack.payload.statistic.StatisticForCount(Month(c.createDate) as month, sum(c.viewCount) as value)  from Post c where YEAR(c.createDate) = :year and author = :author group by Month(c.createDate) order by Month(c.createDate) asc")
+	List<StatisticForCount> getStatisticViewPost(@Param("year") Integer year, @Param("author") User author);
 
 	@Query(value = "Select new mypack.payload.statistic.StatisticForCount(Month(c.createDate) as month, count(c) as value)  from Post c where YEAR(c.createDate) = :year group by Month(c.createDate) order by Month(c.createDate) asc")
 	List<StatisticForCount> getCountNewPost(@Param("year") Integer year);

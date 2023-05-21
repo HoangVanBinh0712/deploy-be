@@ -30,8 +30,8 @@ public class EmployerStatisticService {
 
     @Autowired
     CVSubmitRepository cvSubmitRepository;
-//    @Autowired
-//    CommentRepository commentRepository;
+    // @Autowired
+    // CommentRepository commentRepository;
 
     public List<StatisticForCount> getViewPageCountStatistc(String empEmail, Integer year) {
         Optional<User> user = userRepo.findByEmailAndRole(empEmail, ERole.ROLE_EMPLOYER);
@@ -45,14 +45,13 @@ public class EmployerStatisticService {
         return vpc;
     }
 
-    public Long getViewPostCountStatistc(String empEmail) {
+    public List<StatisticForCount> getViewPostCountStatistc(Integer year, String empEmail) {
         Optional<User> user = userRepo.findByEmailAndRole(empEmail, ERole.ROLE_EMPLOYER);
         if (user.isEmpty())
             throw new CommonRuntimeException("User not found with email: " + empEmail);
         // Count total view post
-        Long res = postRepo.getTotalViewPost(user.get().getId());
-        if (res == null)
-            res = 0L;
+        List<StatisticForCount> res = postRepo.getStatisticViewPost(year, user.get());  
+
         return res;
     }
 
@@ -70,20 +69,23 @@ public class EmployerStatisticService {
         return vpc;
     }
 
-//    public List<StatisticForCount> getCountComments(String empEmail, Integer year) {
-//
-//        Optional<User> user = userRepo.findByEmailAndRole(empEmail, ERole.ROLE_EMPLOYER);
-//        if (user.isEmpty())
-//            throw new CommonRuntimeException("User not found with email: " + empEmail);
-//        // Count total view Page
-//        List<Post> lstId = postRepo.getEmpListPost(user.get().getId());
-//
-//        List<StatisticForCount> vpc = commentRepository.getCountComments(lstId, year);
-//
-//        if (vpc.isEmpty())
-//            throw new CommonRuntimeException(
-//                    "Not enough data to statistic . Try to post a job then try a gain later !");
-//
-//        return vpc;
-//    }
+    // public List<StatisticForCount> getCountComments(String empEmail, Integer
+    // year) {
+    //
+    // Optional<User> user = userRepo.findByEmailAndRole(empEmail,
+    // ERole.ROLE_EMPLOYER);
+    // if (user.isEmpty())
+    // throw new CommonRuntimeException("User not found with email: " + empEmail);
+    // // Count total view Page
+    // List<Post> lstId = postRepo.getEmpListPost(user.get().getId());
+    //
+    // List<StatisticForCount> vpc = commentRepository.getCountComments(lstId,
+    // year);
+    //
+    // if (vpc.isEmpty())
+    // throw new CommonRuntimeException(
+    // "Not enough data to statistic . Try to post a job then try a gain later !");
+    //
+    // return vpc;
+    // }
 }

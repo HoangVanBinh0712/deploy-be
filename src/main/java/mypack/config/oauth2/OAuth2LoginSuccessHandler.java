@@ -62,10 +62,12 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 			code = RandomString.get(10);
 			user.setCode(code);
 			userRepository.save(user);
+		} else {
+
+			User us = optionalUser.get();
+			us.setWrongPasswordcount(0L);
+			userRepository.save(us);
 		}
-		User us = optionalUser.get();
-		us.setWrongPasswordcount(0L);
-		userRepository.save(us);
 		jwt = jwtUtils.generateJwtToken(email);
 		refresh = jwtUtils.generateJwtRefreshToken(email);
 

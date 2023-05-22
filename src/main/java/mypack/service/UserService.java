@@ -131,28 +131,25 @@ public class UserService {
 	}
 
 	public BaseResponse employerRegister(EmployerRegisterRequest request) {
-		try {
-			if (userRepo.existsByEmail(request.getEmail()))
-				throw new CommonRuntimeException("Email is already exists !");
-			if (userRepo.existsByPhone(request.getPhone()))
-				throw new CommonRuntimeException("Phone number is already exists !");
-			User user = mapper.map(request, User.class);
-			user.setPassword(passwordEncoder.encode(request.getPassword()));
-			user.setActive(true);
-			user.setEmailConfirm(false);
-			user.setRole(ERole.ROLE_EMPLOYER);
-			City city = cityRepo.getReferenceById(request.getCity());
-			Industry industry = industryRepo.getReferenceById(request.getIndustry());
-			user.setCity(city);
-			user.setIndustry(industry);
-			user.setCreateDate(new Date());
-			user.setWrongPasswordcount(0L);
-			userRepo.save(user);
+		if (userRepo.existsByEmail(request.getEmail()))
+			throw new CommonRuntimeException("Email is already exists !");
+		if (userRepo.existsByPhone(request.getPhone()))
+			throw new CommonRuntimeException("Phone number is already exists !");
+		User user = mapper.map(request, User.class);
+		user.setPassword(passwordEncoder.encode(request.getPassword()));
+		user.setActive(true);
+		user.setEmailConfirm(false);
+		user.setRole(ERole.ROLE_EMPLOYER);
+		City city = cityRepo.getReferenceById(request.getCity());
+		Industry industry = industryRepo.getReferenceById(request.getIndustry());
+		user.setCity(city);
+		user.setIndustry(industry);
+		user.setCreateDate(new Date());
+		user.setWrongPasswordcount(0L);
+		userRepo.save(user);
 
-			return new BaseResponse(true, "Registered successfully !");
-		} catch (Exception ex) {
-			return new BaseResponse(false, ex.getMessage());
-		}
+		return new BaseResponse(true, "Registered successfully !");
+
 	}
 
 	public JwtResponse<UserDTO> login(LoginRequest request) {

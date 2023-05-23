@@ -34,4 +34,9 @@ public class UserDTO {
 	private ServiceDTO service;
 
 	private Date serviceExpirationDate;
+
+	private Boolean active;
+
+	private Date createDate;
+
 }

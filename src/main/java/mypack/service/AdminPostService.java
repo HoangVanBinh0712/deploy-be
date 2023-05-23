@@ -107,5 +107,4 @@ public class AdminPostService {
 			throw new CommonRuntimeException("Post not found with id: " + postId);
 		return new DataResponse<>(true, "", modelMapper.map(optPost.get(), PostDTO.class));
 	}
-
 }

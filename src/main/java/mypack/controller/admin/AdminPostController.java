@@ -90,4 +90,9 @@ public class AdminPostController {
 	// public ResponseEntity<?> statistc() {
 	// return ResponseEntity.ok(adminPostService.getStatistic());
 	// }
+	@GetMapping("get-count-all-post")
+	public ResponseEntity<?> getCountAllPost() {
+		return ResponseEntity.ok(postSearchService
+				.getCountAllPost());
+	}
 }

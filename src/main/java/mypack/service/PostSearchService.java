@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import mypack.dto.PostDTO;
+import mypack.payload.DataResponse;
 import mypack.payload.ListWithPagingResponse;
 import mypack.repository.PostRepository;
 import mypack.repository.ServiceRepository;
@@ -126,5 +127,8 @@ public class PostSearchService {
 		return new ListWithPagingResponse<>(page, 1, limit,
 				postRepository.getHotPostByDates(stDate, endDate, (page - 1) * limit, limit).stream()
 						.map(p -> modelMapper.map(p, PostDTO.class)).toList());
+	}
+	public DataResponse<Long> getCountAllPost() {
+		return new DataResponse<>(postRepository.count());
 	}
 }

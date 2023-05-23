@@ -31,7 +31,7 @@ public class EmployerRegisterRequest {
 	
     @NotBlank
 	@Pattern(regexp = "0[0-9]+", message = "Phone number must contain only number character and begin with 0")
-	@Size(min = 10, max = 10, message = "Phone number must have 10 number character")
+	@Size(min = 9, max = 20, message = "Phone number must have 9-20 number character")
 	private String phone;
 
 	@NotNull

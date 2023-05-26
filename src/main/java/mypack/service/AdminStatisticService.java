@@ -2,10 +2,15 @@ package mypack.service;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import mypack.controller.exception.CommonRuntimeException;
+import mypack.dto.OrderDTO;
 import mypack.payload.statistic.StatisticForCount;
 import mypack.payload.statistic.SumTotalByYearMonthCurrencyStatus;
 import mypack.repository.CVSubmitRepository;
@@ -30,11 +35,14 @@ public class AdminStatisticService {
 	@Autowired
 	CVSubmitRepository cvSubmitRepository;
 
-//	@Autowired
-//	CommentRepository commentRepository;
+	// @Autowired
+	// CommentRepository commentRepository;
 
 	@Autowired
 	OrderRepository orderRepository;
+
+	@Autowired
+	private ModelMapper mapper;
 
 	public List<StatisticForCount> getPostCountStatistc(Integer year) {
 		// Count total view post
@@ -53,17 +61,17 @@ public class AdminStatisticService {
 		return vpc;
 	}
 
-//	public List<StatisticForCount> getCountComments(Integer year) {
-//
-//		// Count total view Page
-//
-//		List<StatisticForCount> vpc = commentRepository.getCountAllComments(year);
-//
-//		if (vpc.isEmpty())
-//			throw new CommonRuntimeException("Do not have any comment in any post !");
-//
-//		return vpc;
-//	}
+	// public List<StatisticForCount> getCountComments(Integer year) {
+	//
+	// // Count total view Page
+	//
+	// List<StatisticForCount> vpc = commentRepository.getCountAllComments(year);
+	//
+	// if (vpc.isEmpty())
+	// throw new CommonRuntimeException("Do not have any comment in any post !");
+	//
+	// return vpc;
+	// }
 
 	public List<StatisticForCount> getNewUserRegistered(Integer year) {
 		// Count total view post
@@ -80,5 +88,10 @@ public class AdminStatisticService {
 		if (res.isEmpty())
 			throw new CommonRuntimeException("Do not have any order to statistic !");
 		return res;
+	}
+
+	public List<OrderDTO> getAllOrder(Integer page, EROrderStatus status) {
+		Pageable pageable = PageRequest.of(page, 100);
+		return orderRepository.findByStatus(status, pageable).stream().map(x -> mapper.map(x, OrderDTO.class)).toList();
 	}
 }

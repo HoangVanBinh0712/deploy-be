@@ -61,4 +61,13 @@ public class AdminStatisticController {
 
         return ResponseEntity.ok(reportService.getStatisticReportByStatus(year,handle));
     }
+
+    @GetMapping("order")
+    public ResponseEntity<?> getAllOrder(@RequestParam(name = "page", required = true) Integer page,
+            @RequestParam(name = "status", required = true) EROrderStatus status) {
+
+        return ResponseEntity.ok(service.getAllOrder(page - 1, status));
+    }
+    
+
 }

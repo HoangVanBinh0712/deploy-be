@@ -16,6 +16,8 @@ import mypack.utility.datatype.EROrderStatus;
 public interface OrderRepository extends JpaRepository<UserOrder, Long> {
     Integer countByUserAndStatus(User employer, EROrderStatus status);
 
+    List<UserOrder> findByStatus(EROrderStatus status, Pageable pageable);
+
     List<UserOrder> findByUserAndStatus(User employer, EROrderStatus status, Pageable pageable);
 
     @Query(value = "Select new mypack.payload.statistic.SumTotalByYearMonthCurrencyStatus(Month(c.createdDate) as month, c.service.id, status ,currency, sum(c.total) as value)  from UserOrder c where YEAR(c.createdDate) = :year and status = :status group by Month(c.createdDate), c.service,currency order by Month(c.createdDate), c.service.id asc")

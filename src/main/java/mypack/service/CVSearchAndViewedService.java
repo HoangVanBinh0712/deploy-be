@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mypack.controller.exception.CommonRuntimeException;
+import mypack.dto.CVViewedDTO;
 import mypack.dto.ProfileDTO;
 import mypack.dto.UserDTO;
 import mypack.model.CVViewed;
@@ -79,11 +80,11 @@ public class CVSearchAndViewedService {
 		return cvViewedRepository.countViewedForCV(mediaId, userId);
 	}
 
-	public List<UserDTO> getEmployerViewedCV(Long userId, Long mediaId) {
+	public List<CVViewedDTO> getEmployerViewedCV(Long userId, Long mediaId) {
 		List<CVViewed> lst = cvViewedRepository.getEmployerViewedCV(mediaId, userId);
 		if (lst.isEmpty())
 			throw new CommonRuntimeException("No employer has viewed your cv yet !");
-		return lst.stream().map(x -> x.getViewer()).map(x -> mapper.map(x, UserDTO.class)).toList();
+		return lst.stream().map(x -> mapper.map(x, CVViewedDTO.class)).toList();
 
 	}
 }

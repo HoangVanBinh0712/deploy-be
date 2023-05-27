@@ -111,12 +111,12 @@ public class CVPredictService {
 		 * 
 		 */
 		int count = postRepository.postCountBeforeSearch(null, null, null, null, null, null, null, null, null, null,
-				Industry.getId(), null, null, null, null, null).intValue();
+				Industry.getId(), null, EStatus.ACTIVE, null, null, null).intValue();
 
 		Page page = new Page(pageNumber, limit, count);
 
 		List<PostDTO> posts = postRepository.postSearch(null, null, null, null, null, null, null, null, null, null,
-				Industry.getId(), null, null, null, null, null, page).stream()
+				Industry.getId(), null, EStatus.ACTIVE, null, null, null, page).stream()
 				.map(p -> modelMapper.map(p, PostDTO.class)).toList();
 
 		return new ListWithPagingResponse<>(page.getPageNumber() + 1, page.getTotalPage(), page.getPageSize(), posts);

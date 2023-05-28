@@ -19,6 +19,8 @@ public class OrderDTO {
 
 	private ServiceDTO service;
 
+	private UserDTO user;
+
 	private Integer duration;
 
 	// Duration * service.price

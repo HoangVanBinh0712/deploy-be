@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import mypack.controller.exception.CommonRuntimeException;
 import mypack.dto.OrderDTO;
+import mypack.payload.admin.OrderStatistic;
 import mypack.payload.statistic.StatisticForCount;
 import mypack.payload.statistic.SumTotalByYearMonthCurrencyStatus;
 import mypack.repository.CVSubmitRepository;
@@ -90,8 +91,10 @@ public class AdminStatisticService {
 		return res;
 	}
 
-	public List<OrderDTO> getAllOrder(Integer page, EROrderStatus status) {
+	public OrderStatistic getAllOrder(Integer page, EROrderStatus status) {
 		Pageable pageable = PageRequest.of(page, 100);
-		return orderRepository.findByStatus(status, pageable).stream().map(x -> mapper.map(x, OrderDTO.class)).toList();
+		Long total = orderRepository.getSumOrderForAdmin(status.toString());
+		return new OrderStatistic(orderRepository.findByStatus(status, pageable).stream()
+				.map(x -> mapper.map(x, OrderDTO.class)).toList(), total);
 	}
 }

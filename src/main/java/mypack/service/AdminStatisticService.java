@@ -92,7 +92,7 @@ public class AdminStatisticService {
 	}
 
 	public OrderStatistic getAllOrder(Integer page, EROrderStatus status) {
-		Pageable pageable = PageRequest.of(page, 100);
+		Pageable pageable = PageRequest.of(page, 10000);
 		Long total = orderRepository.getSumOrderForAdmin(status.toString());
 		return new OrderStatistic(orderRepository.findByStatus(status, pageable).stream()
 				.map(x -> mapper.map(x, OrderDTO.class)).toList(), total);

@@ -73,9 +73,9 @@ public class AdminPostService {
 				"Your followed company has posted a new job - " + post.getTitle() + " !",
 				post);
 		// send email
-		String[] listUserEmail = userRepo.getListEmailUser(listUserId);
-		if (listUserEmail.length > 0)
-			sendEmailService.sendMailForNotification(listUserEmail, String.format(content, post.getTitle()));
+		// String[] listUserEmail = userRepo.getListEmailUser(listUserId);
+		// if (listUserEmail.length > 0)
+		// 	sendEmailService.sendMailForNotification(listUserEmail, String.format(content, post.getTitle()));
 		return new BaseResponse(true, "Accept susscessfully post with id: " + postId);
 	}
 

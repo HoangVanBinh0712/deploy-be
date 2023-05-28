@@ -48,9 +48,9 @@ public class AppointmentService {
 		// Add notification (both) and send mail for employer ?
 		notiService.addNotification(ap.getEmployer().getId(), ap.getUser().getName() + " has denied your appointment !",
 				null);
-		if (ap.getEmployer().getEmailConfirm())
-			sendMail.sendMailForNotification(new String[] { ap.getEmployer().getEmail() },
-					ap.getUser().getName() + " has denied your appointment !");
+		// if (ap.getEmployer().getEmailConfirm())
+		// 	sendMail.sendMailForNotification(new String[] { ap.getEmployer().getEmail() },
+		// 			ap.getUser().getName() + " has denied your appointment !");
 		return new BaseResponse(true, "Deny appointment success !");
 	}
 
@@ -79,9 +79,9 @@ public class AppointmentService {
 		// emp
 		notiService.addNotification(ap.getEmployer().getId(),
 				"You have created an appointment with " + ap.getUser().getName() + " !", null);
-		if (ap.getUser().getEmailConfirm())
-			sendMail.sendMailForNotification(new String[] { ap.getUser().getEmail() },
-					ap.getEmployer().getName() + " has created an appointment with you !");
+		// if (ap.getUser().getEmailConfirm())
+		// 	sendMail.sendMailForNotification(new String[] { ap.getUser().getEmail() },
+		// 			ap.getEmployer().getName() + " has created an appointment with you !");
 		return new DataResponse<AppointmentDTO>(true, "Create appointment success !",
 				mapper.map(ap, AppointmentDTO.class));
 	}
@@ -136,9 +136,9 @@ public class AppointmentService {
 			// emp
 			notiService.addNotification(ap.getEmployer().getId(),
 					"You have cancelled an appointment with " + ap.getUser().getName() + " !", null);
-			if (ap.getUser().getEmailConfirm())
-				sendMail.sendMailForNotification(new String[] { ap.getUser().getEmail() },
-						ap.getEmployer().getName() + " has cancelled an appointment with you !");
+			// if (ap.getUser().getEmailConfirm())
+			// 	sendMail.sendMailForNotification(new String[] { ap.getUser().getEmail() },
+			// 			ap.getEmployer().getName() + " has cancelled an appointment with you !");
 		}
 
 		return new BaseResponse(true, "Delete appointment success !");

@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import mypack.model.Appointment;
 import mypack.model.Notification;
 import mypack.model.User;
+import mypack.repository.AppointmentRepository;
 import mypack.repository.NotificationRepository;
 import mypack.repository.UserRepository;
 
@@ -25,6 +27,9 @@ public class SchedulingService {
 
 	@Autowired
 	private SendEmailService sendEmailService;
+
+	@Autowired
+	private AppointmentRepository appointmentRepository;
 
 	@Value("${email.content.employer-notification-service}")
 	private String content;
@@ -52,6 +57,18 @@ public class SchedulingService {
 			Notification n = new Notification(null, user, null, content, day);
 			newNoti.add(n);
 		}
+
+		// Check if user has schedule today
+
+		List<Appointment> appointments = appointmentRepository.getAllAppointmentInDate(day,
+				new Date(day.getTime() + 86400000));
+		for (Appointment appointment : appointments) {
+			String title = String.format("You have an appointment with %s today !",
+					appointment.getEmployer().getName());
+			Notification n = new Notification(null, appointment.getUser(), null, title, day);
+			newNoti.add(n);
+		}
+
 		notificationRepository.saveAll(newNoti);
 		// delete old noti
 		notificationRepository.deleteOldNotice(new Date(day.getTime() - 7 * 86400000));

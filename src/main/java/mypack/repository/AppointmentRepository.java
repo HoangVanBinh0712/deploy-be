@@ -18,9 +18,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long>,
 	List<Appointment> findByUser(User user);
 
 	List<Appointment> findByEmployer(User employer);
-	
-	@Query(value = "select * from appointment where employer=:empId and start_time= :date limit 1", nativeQuery= true)
-	Appointment checkAvailableTime(@Param("empId")Long empId,@Param("date")Date date);
-	
+
+	@Query(value = "select * from appointment where employer=:empId and start_time= :date limit 1", nativeQuery = true)
+	Appointment checkAvailableTime(@Param("empId") Long empId, @Param("date") Date date);
+
+	@Query(value = "select * from appointment where start_time >= :date1 and start_time <= :date2", nativeQuery = true)
+	List<Appointment> getAllAppointmentInDate(@Param("date1") Date date1, @Param("date2") Date date2);
 
 }

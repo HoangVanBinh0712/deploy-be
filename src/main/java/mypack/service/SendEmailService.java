@@ -108,33 +108,33 @@ public class SendEmailService {
 	}
 
 	public BaseResponse sendMailForNotification(String[] email, String emailContent) {
-		// String name = "Our Clients";
+		String name = "Our Clients";
 
-		// MimeMessage message = sender.createMimeMessage();
-		// try {
-		// 	// set mediaType
-		// 	MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-		// 			StandardCharsets.UTF_8.name());
-		// 	// add attachment
+		MimeMessage message = sender.createMimeMessage();
+		try {
+			// set mediaType
+			MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+					StandardCharsets.UTF_8.name());
+			// add attachment
 
-		// 	Template t = config.getTemplate("notification-template.ftl");
-		// 	Map<String, Object> model = new HashMap<>();
-		// 	String subject = EmailType.NOTIFICATION;
-		// 	model.put("subject", subject);
-		// 	model.put("content", emailContent);
-		// 	model.put("name", name);
+			Template t = config.getTemplate("notification-template.ftl");
+			Map<String, Object> model = new HashMap<>();
+			String subject = EmailType.NOTIFICATION;
+			model.put("subject", subject);
+			model.put("content", emailContent);
+			model.put("name", name);
 
-		// 	String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
+			String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
 
-		// 	helper.setTo(email);
-		// 	helper.setText(html, true);
-		// 	helper.setSubject(subject);
-		// 	helper.setFrom(appEmail);
-		// 	sender.send(message);
+			helper.setTo(email);
+			helper.setText(html, true);
+			helper.setSubject(subject);
+			helper.setFrom(appEmail);
+			sender.send(message);
 
-		// } catch (MessagingException | IOException | TemplateException | MailException e) {
-		// 	throw new CommonRuntimeException(String.format("Send notification fail: (%s)", e.getMessage()));
-		// }
+		} catch (MessagingException | IOException | TemplateException | MailException e) {
+			throw new CommonRuntimeException(String.format("Send notification fail: (%s)", e.getMessage()));
+		}
 
 		return new BaseResponse(true, "Success");
 	}

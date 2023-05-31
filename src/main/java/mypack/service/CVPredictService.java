@@ -27,6 +27,7 @@ import mypack.payload.predict.CVPredictResponse;
 import mypack.repository.IndustryRepository;
 import mypack.repository.PostRepository;
 import mypack.repository.ProfileRepository;
+import mypack.utility.ModelSorting;
 import mypack.utility.Page;
 import mypack.utility.datatype.EStatus;
 
@@ -83,8 +84,8 @@ public class CVPredictService {
 
 			int count = postRepository.postCountBeforeSearch(null, null, null, null, null, null, null, null, null, null,
 					ind.getId(), null, EStatus.ACTIVE, null, null, null).intValue();
-
-			Page page = new Page(null, null, count);
+			// 8 -> view, true -> desc
+			Page page = new Page(1, 20, count, ModelSorting.getPostSort(8, true));
 
 			List<PostDTO> posts = postRepository.postSearch(null, null, null, null, null, null, null, null, null, null,
 					ind.getId(), null, EStatus.ACTIVE, null, null, null, page).stream()

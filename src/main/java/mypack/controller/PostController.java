@@ -72,7 +72,7 @@ public class PostController {
 			@RequestParam(name = "serviceId", required = false) Long serviceId,
 			@RequestParam(name = "page", required = false) Integer page,
 			@RequestParam(name = "limit", required = false) Integer limit,
-			@RequestParam(required = false) Integer sortBy, @RequestParam(required = false) Boolean sortDescending)
+			@RequestParam(required = false, defaultValue = "1") Integer sortBy, @RequestParam(required = false, defaultValue = "true") Boolean sortDescending)
 			throws ParseException {
 		// Active post only
 		Long count = postSearchService.getCountBeforSearch(keyword, recruit, mSalary, hSalary, method, position,

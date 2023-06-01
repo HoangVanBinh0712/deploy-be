@@ -42,8 +42,14 @@ public class PostSearchCustomRepositoryImpl implements PostSearchCustomRepositor
 		Root<Post> root = cq.from(Post.class);
 		List<Predicate> lstPredicate = new ArrayList<>();
 
-		if (StringUtils.isNotBlank(keyword))
-			lstPredicate.add(cb.like(root.get(Post_.title), "%" + keyword + "%"));
+		if (StringUtils.isNotBlank(keyword)) {
+			List<Predicate> filterKeyword = new ArrayList<>();
+			filterKeyword.add(cb.like(root.get(Post_.description), "%" + keyword + "%"));
+			filterKeyword.add(cb.like(root.get(Post_.benifit), "%" + keyword + "%"));
+			filterKeyword.add(cb.like(root.get(Post_.requirement), "%" + keyword + "%"));
+			filterKeyword.add(cb.like(root.get(Post_.title), "%" + keyword + "%"));
+			lstPredicate.add(cb.or(filterKeyword.toArray(new Predicate[0])));
+		}
 
 		if (recruit != null)
 			lstPredicate.add(cb.greaterThanOrEqualTo(root.get(Post_.recruit), recruit));
@@ -87,8 +93,8 @@ public class PostSearchCustomRepositoryImpl implements PostSearchCustomRepositor
 		if (status != null)
 			lstPredicate.add(cb.equal(root.get(Post_.status), status));
 		// else {
-		// 	lstPredicate.add(cb.or(cb.equal(root.get(Post_.status), EStatus.ACTIVE),
-		// 			cb.equal(root.get(Post_.status), EStatus.DISABLE)));
+		// lstPredicate.add(cb.or(cb.equal(root.get(Post_.status), EStatus.ACTIVE),
+		// cb.equal(root.get(Post_.status), EStatus.DISABLE)));
 		// }
 
 		if (page.getSort() != null) {
@@ -115,8 +121,14 @@ public class PostSearchCustomRepositoryImpl implements PostSearchCustomRepositor
 		Root<Post> root = cq.from(Post.class);
 		List<Predicate> lstPredicate = new ArrayList<>();
 
-		if (StringUtils.isNotBlank(keyword))
-			lstPredicate.add(cb.like(root.get(Post_.title), "%" + keyword + "%"));
+		if (StringUtils.isNotBlank(keyword)) {
+			List<Predicate> filterKeyword = new ArrayList<>();
+			filterKeyword.add(cb.like(root.get(Post_.description), "%" + keyword + "%"));
+			filterKeyword.add(cb.like(root.get(Post_.benifit), "%" + keyword + "%"));
+			filterKeyword.add(cb.like(root.get(Post_.requirement), "%" + keyword + "%"));
+			filterKeyword.add(cb.like(root.get(Post_.title), "%" + keyword + "%"));
+			lstPredicate.add(cb.or(filterKeyword.toArray(new Predicate[0])));
+		}
 
 		if (recruit != null)
 			lstPredicate.add(cb.greaterThanOrEqualTo(root.get(Post_.recruit), recruit));
@@ -157,12 +169,12 @@ public class PostSearchCustomRepositoryImpl implements PostSearchCustomRepositor
 
 		if (serviceId != null)
 			lstPredicate.add(cb.equal(root.get(Post_.service), serviceId));
-			
+
 		if (status != null)
 			lstPredicate.add(cb.equal(root.get(Post_.status), status));
 		// else {
-		// 	lstPredicate.add(cb.or(cb.equal(root.get(Post_.status), EStatus.ACTIVE),
-		// 			cb.equal(root.get(Post_.status), EStatus.DISABLE)));
+		// lstPredicate.add(cb.or(cb.equal(root.get(Post_.status), EStatus.ACTIVE),
+		// cb.equal(root.get(Post_.status), EStatus.DISABLE)));
 		// }
 
 		Predicate predicate = cb.and(lstPredicate.toArray(new Predicate[0]));

@@ -46,12 +46,21 @@ public class ProfileSearchCustomRepositoryImpl implements ProfileSearchCustomRep
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Profile> cq = cb.createQuery(Profile.class);
         Root<Profile> root = cq.from(Profile.class);
-        Join<Profile, User> join = root.join(Profile_.user, JoinType.LEFT);
+        Join<Profile, User> join = root.join(Profile_.user, JoinType.INNER);
         List<Predicate> filters = new ArrayList<>();
         filters.add(cb.equal(root.get(Profile_.isPublic), true));
 
-        if (StringUtils.isNotBlank(keyword))
-            filters.add(cb.like(root.get(Profile_.name), "%" + keyword + "%"));
+        if (StringUtils.isNotBlank(keyword)) {
+            List<Predicate> filterKeyword = new ArrayList<>();
+            filterKeyword.add(cb.like(root.get(Profile_.name), "%" + keyword + "%"));
+            filterKeyword.add(cb.like(root.get(Profile_.skillsAndKnowledges), "%" + keyword + "%"));
+            filterKeyword.add(cb.like(root.get(Profile_.workExperiences), "%" + keyword + "%"));
+            filterKeyword.add(cb.like(join.get(User_.name), "%" + keyword + "%"));
+            filterKeyword.add(cb.like(join.get(User_.description), "%" + keyword + "%"));
+            filterKeyword.add(cb.like(join.get(User_.address), "%" + keyword + "%"));
+
+            filters.add(cb.or(filterKeyword.toArray(new Predicate[0])));
+        }
         if (method != null)
             filters.add(cb.equal(root.get(Profile_.method), method));
         if (position != null)
@@ -92,8 +101,17 @@ public class ProfileSearchCustomRepositoryImpl implements ProfileSearchCustomRep
         List<Predicate> filters = new ArrayList<>();
         filters.add(cb.equal(root.get(Profile_.isPublic), true));
 
-        if (StringUtils.isNotBlank(keyword))
-            filters.add(cb.like(root.get(Profile_.name), "%" + keyword + "%"));
+        if (StringUtils.isNotBlank(keyword)) {
+            List<Predicate> filterKeyword = new ArrayList<>();
+            filterKeyword.add(cb.like(root.get(Profile_.name), "%" + keyword + "%"));
+            filterKeyword.add(cb.like(root.get(Profile_.skillsAndKnowledges), "%" + keyword + "%"));
+            filterKeyword.add(cb.like(root.get(Profile_.workExperiences), "%" + keyword + "%"));
+            filterKeyword.add(cb.like(join.get(User_.name), "%" + keyword + "%"));
+            filterKeyword.add(cb.like(join.get(User_.description), "%" + keyword + "%"));
+            filterKeyword.add(cb.like(join.get(User_.address), "%" + keyword + "%"));
+
+            filters.add(cb.or(filterKeyword.toArray(new Predicate[0])));
+        }
         if (method != null)
             filters.add(cb.equal(root.get(Profile_.method), method));
         if (position != null)

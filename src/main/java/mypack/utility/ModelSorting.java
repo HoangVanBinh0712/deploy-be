@@ -84,6 +84,10 @@ public class ModelSorting {
 
 		if (sortBy != null) {
 			if (sortDescending == null || !sortDescending.booleanValue()) { // ASC
+				if (sortBy >= 16) {
+					sort = sort.and(JpaSort.of(Profile_.lastModified).ascending());
+					sortBy -= 16;
+				}
 				if (sortBy >= 8) {
 					sort = sort.and(JpaSort.of(Profile_.name).ascending());
 					sortBy -= 8;
@@ -101,6 +105,10 @@ public class ModelSorting {
 					sortBy -= 1;
 				}
 			} else { // DESC
+				if (sortBy >= 16) {
+					sort = sort.and(JpaSort.of(Profile_.lastModified).descending());
+					sortBy -= 8;
+				}
 				if (sortBy >= 8) {
 					sort = sort.and(JpaSort.of(Profile_.name).descending());
 					sortBy -= 8;

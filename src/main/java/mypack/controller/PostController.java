@@ -72,7 +72,8 @@ public class PostController {
 			@RequestParam(name = "serviceId", required = false) Long serviceId,
 			@RequestParam(name = "page", required = false) Integer page,
 			@RequestParam(name = "limit", required = false) Integer limit,
-			@RequestParam(required = false, defaultValue = "1") Integer sortBy, @RequestParam(required = false, defaultValue = "true") Boolean sortDescending)
+			@RequestParam(required = false, defaultValue = "1") Integer sortBy,
+			@RequestParam(required = false, defaultValue = "true") Boolean sortDescending)
 			throws ParseException {
 		// Active post only
 		Long count = postSearchService.getCountBeforSearch(keyword, recruit, mSalary, hSalary, method, position,
@@ -84,6 +85,35 @@ public class PostController {
 						gender, currency, authorId, industryId, cityId, EStatus.ACTIVE, expirationDate, startDate,
 						serviceId,
 						new Page(page, limit, count.intValue(), ModelSorting.getPostSort(sortBy, sortDescending))));
+	}
+
+	@GetMapping(value = "count")
+	public ResponseEntity<?> getPostCount(@RequestParam(name = "keyword", required = false) String keyword,
+			@RequestParam(name = "recruit", required = false) Long recruit,
+			@RequestParam(name = "min-salary", required = false) Long mSalary,
+			@RequestParam(name = "high-salary", required = false) Long hSalary,
+			@RequestParam(name = "method", required = false) EMethod method,
+			@RequestParam(name = "position", required = false) EPosition position,
+			@RequestParam(name = "experience", required = false) EExperience experience,
+			@RequestParam(name = "gender", required = false) EGender gender,
+			@RequestParam(name = "currency", required = false) ECurrency currency,
+			@RequestParam(name = "authorId", required = false) Long authorId,
+			@RequestParam(name = "industryId", required = false) Long industryId,
+			@RequestParam(name = "cityId", required = false) Long cityId,
+			@RequestParam(name = "expirationDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date expirationDate,
+			@RequestParam(name = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+			@RequestParam(name = "serviceId", required = false) Long serviceId,
+			@RequestParam(name = "page", required = false) Integer page,
+			@RequestParam(name = "limit", required = false) Integer limit,
+			@RequestParam(required = false, defaultValue = "1") Integer sortBy,
+			@RequestParam(required = false, defaultValue = "true") Boolean sortDescending)
+			throws ParseException {
+		// Active post only
+		Long count = postSearchService.getCountBeforSearch(keyword, recruit, mSalary, hSalary, method, position,
+				experience, gender, currency, authorId, industryId, cityId, EStatus.ACTIVE, expirationDate, startDate,
+				serviceId);
+
+		return ResponseEntity.ok(count);
 	}
 
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,5 +54,13 @@ public class ProfileSearchController {
 			@RequestParam("userId") Long userId, @RequestParam("mediaId") Long mediaId) {
 		return ResponseEntity.ok(cvSearchService.addViewed(emp.getEmail(), mediaId, userId));
 
+	}
+
+	@GetMapping("{postId}")
+	public ResponseEntity<?> profileSearchByPost(@PathVariable("postId") Long postId,
+			@AuthenticationPrincipal UserDetailsCustom user,
+			@RequestParam(name = "page", required = false) Integer page,
+			@RequestParam(name = "limit", required = false) Integer limit) {
+		return ResponseEntity.ok(cvSearchService.getListProfileByPost(postId, user.getId(), page, limit));
 	}
 }

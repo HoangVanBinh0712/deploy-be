@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import mypack.controller.exception.CommonRuntimeException;
 import mypack.dto.CVViewedDTO;
 import mypack.dto.ProfileDTO;
-import mypack.dto.UserDTO;
 import mypack.model.CVViewed;
+import mypack.model.Post;
 import mypack.model.Profile;
 import mypack.model.User;
 import mypack.model.pk.CVViewedPK;
@@ -20,6 +20,7 @@ import mypack.model.pk.ProfilePK;
 import mypack.payload.BaseResponse;
 import mypack.payload.ListWithPagingResponse;
 import mypack.repository.CVViewedRepository;
+import mypack.repository.PostRepository;
 import mypack.repository.ProfileRepository;
 import mypack.repository.UserRepository;
 import mypack.utility.ModelSorting;
@@ -40,6 +41,9 @@ public class CVSearchAndViewedService {
 
 	@Autowired
 	CVViewedRepository cvViewedRepository;
+
+	@Autowired
+	PostRepository postRepository;
 
 	@Autowired
 	ModelMapper mapper;
@@ -87,4 +91,24 @@ public class CVSearchAndViewedService {
 		return lst.stream().map(x -> mapper.map(x, CVViewedDTO.class)).toList();
 
 	}
+
+	
+    public ListWithPagingResponse<ProfileDTO> getListProfileByPost(Long postId, Long empId, Integer pageNumber, Integer limit){
+        if(isEligible(empId))
+        {
+            Optional<Post> optPost = postRepository.findById(postId);
+            if (optPost.isEmpty())
+                throw new CommonRuntimeException("Post not found with id: " + postId);
+            Post post = optPost.get();
+            if (post.getAuthor().getId() != empId)
+                throw new CommonRuntimeException("Post not found with id: " + postId);
+            Long industryId = post.getIndustry().getId();
+            Long c = profileRepo.profileCountBeforeSearch(null, null, null, null, industryId, null);
+            Page page = new Page(pageNumber, limit, c.intValue(), ModelSorting.getProfileSort(16, true));
+
+            return profileRepo.profileSearch(null, null, null, null, industryId, null, page);
+             
+    }
+        return null;
+    }
 }

@@ -11,6 +11,7 @@ public class ListWithPagingResponse<T> extends BaseResponse {
 	private int totalPage;
 	private int limit;
 	private List<T> data;
+	private int amountResult;
 	
 	public ListWithPagingResponse(int currentPage, int totalPage,int limit, List<T> data) {
 		super(true, "");

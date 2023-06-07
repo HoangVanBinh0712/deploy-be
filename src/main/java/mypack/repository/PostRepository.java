@@ -16,7 +16,7 @@ import mypack.repository.custom.PostSearchCustomRepository;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long>, PostSearchCustomRepository {
-	@Query(value = "Select * from post where service_id in (:arr) and status = 'ACTIVE' and expiration_date >= :date", nativeQuery = true)
+	@Query(value = "Select * from post where service_id in (:arr) and status = 'ACTIVE' and expiration_date >= :date ORDER BY RAND()", nativeQuery = true)
 	List<Post> getJobByArrService(@Param("arr") List<Long> arr, @Param("date") Date date, Pageable page);
 
 	@Query(value = "Select * from post where author = :id", nativeQuery = true)

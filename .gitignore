@@ -33,6 +33,3 @@ build/
 .vscode/
 
 hidden/
-
-.properties
-src/main/resources/application.properties

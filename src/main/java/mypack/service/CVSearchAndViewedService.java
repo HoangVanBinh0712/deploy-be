@@ -100,7 +100,7 @@ public class CVSearchAndViewedService {
             if (optPost.isEmpty())
                 throw new CommonRuntimeException("Post not found with id: " + postId);
             Post post = optPost.get();
-            if (post.getAuthor().getId() != empId)
+            if (!post.getAuthor().getId().equals(empId))
                 throw new CommonRuntimeException("Post not found with id: " + postId);
             Long industryId = post.getIndustry().getId();
             Long c = profileRepo.profileCountBeforeSearch(null, null, null, null, industryId, null);

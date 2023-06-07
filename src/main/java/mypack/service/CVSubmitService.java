@@ -86,7 +86,7 @@ public class CVSubmitService {
 		if (optPost.isEmpty())
 			throw new CommonRuntimeException("Post not found with id: " + postId);
 		Post post = optPost.get();
-		if (post.getAuthor().getId() != employerId)
+		if (!post.getAuthor().getId().equals(employerId))
 			throw new CommonRuntimeException("You do not have right to get this resource !");
 		if (page == null || page <= 0)
 			page = 1;

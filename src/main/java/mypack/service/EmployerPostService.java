@@ -294,7 +294,7 @@ public class EmployerPostService {
         if (optPost.isEmpty())
             throw new CommonRuntimeException("Post not found with id: " + postId);
         Post post = optPost.get();
-        if (post.getAuthor().getId() != empId)
+        if (!post.getAuthor().getId().equals(empId))
             throw new CommonRuntimeException("Post not found with id: " + postId);
 
         return new DataResponse<>(true, "", modelMapper.map(post, PostDTO.class));
